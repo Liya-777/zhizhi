@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.env
+backend/data/
+backend/app/static/
+node_modules/
+.DS_Store
+*.log
+data/
+.claude/
+.codegraph/
+.impeccable/
+tasks/
+# Local installation and generated state
+backend/.venv/
+.venv/
+backend/models/
+models/
+frontend/.npm-cache/
+.pytest_cache/
+.env.*
+!.env.example

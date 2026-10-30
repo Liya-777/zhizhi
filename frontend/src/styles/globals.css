@@ -1,0 +1,424 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: oklch(0.97 0 0);
+  --surface: oklch(1 0 0);
+  --surface-sheen: oklch(0.985 0 0);
+  --surface-edge: oklch(0.965 0 0);
+  --surface-muted: oklch(0.95 0 0);
+  --surface-active: oklch(0.93 0 0);
+  --border: oklch(0.86 0 0);
+  --border-strong: oklch(0.78 0 0);
+  --text-primary: oklch(0 0 0);
+  --text-body: oklch(0.36 0 0);
+  --text-strong: oklch(0.35 0 0);
+  --text-secondary: oklch(0.48 0 0);
+  --text-muted: oklch(0.55 0 0);
+  --text-danger: oklch(0.52 0.22 21);
+  --material-regular: oklch(0.97 0 0 / 0.72);
+  --material-thick: oklch(0.97 0 0 / 0.85);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #15181c;
+  --surface: #21262c;
+  --surface-sheen: #20252b;
+  --surface-edge: #1c2127;
+  --surface-muted: #282e36;
+  --surface-active: #333c47;
+  --border: #3b444f;
+  --border-strong: #566170;
+  --text-primary: #f1f3f5;
+  --text-body: #d8dee5;
+  --text-strong: #e5eaf0;
+  --text-secondary: #bbc5d0;
+  --text-muted: #a5b0be;
+  --text-danger: #ff9299;
+  --material-regular: rgb(24 28 33 / 88%);
+  --material-thick: rgb(22 26 31 / 94%);
+}
+html { background: var(--bg); }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   Base — Apple iOS system light
+   ═══════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  body {
+    @apply antialiased;
+    color: var(--text-primary);
+    background-color: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+      'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+  }
+
+  /* ── Paper texture — ultra-subtle grain (<2% opacity) ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.015;
+    pointer-events: none;
+    z-index: 0;
+    background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 2px, oklch(0 0 0) 2px, oklch(0 0 0) 2.5px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 2px, oklch(0 0 0) 2px, oklch(0 0 0) 2.5px
+      );
+  }
+
+  ::selection {
+    background-color: var(--surface-active);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--text-muted);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Material layers — Apple vibrancy + backdrop-blur
+   ═══════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  .material-regular {
+    background-color: var(--material-regular);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .material-thick {
+    background-color: var(--material-thick);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+  }
+
+  /* ── Card with brushed-metal micro-sheen ── */
+  .card {
+    background: linear-gradient(160deg, var(--surface) 0%, var(--surface-sheen) 50%, var(--surface-edge) 100%);
+    border: 0.5px solid var(--border);
+    border-radius: 13px;
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.04);
+  }
+  .card:hover {
+    box-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
+  }
+
+  .settings-card {
+    background-color: var(--surface);
+    border: 0.5px solid var(--border);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.04);
+  }
+
+  .card-interactive {
+    @apply card;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0), transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  }
+  .card-interactive:hover { transform: scale(0.99); }
+  .card-interactive:active { transform: scale(0.97); }
+
+  /* ── Metal gradient brush ── */
+  .metal-gradient {
+    background: linear-gradient(160deg, oklch(0.42 0 0) 0%, oklch(0.32 0 0) 40%, oklch(0.25 0 0) 100%);
+  }
+
+  /* ── Primary button ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    min-width: 44px;
+    min-height: 44px;
+    background: linear-gradient(160deg, oklch(0.48 0 0) 0%, oklch(0.35 0 0) 40%, oklch(0.20 0 0) 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s cubic-bezier(0.25, 0.1, 0.25, 1.0), transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+  /* ── Secondary ── */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    min-width: 44px;
+    min-height: 44px;
+    background: transparent;
+    color: var(--text-strong);
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  }
+  .btn-secondary:hover { background: oklch(0.35 0 0 / 0.06); }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  /* ── Ghost ── */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    background: transparent;
+    color: var(--text-strong);
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  }
+  .btn-ghost:hover { background: oklch(0.86 0 0 / 0.4); }
+
+  /* ── Input: iOS search bar style ── */
+  .input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface-muted);
+    border: none;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0), box-shadow 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  }
+  .input::placeholder { color: var(--text-muted); }
+
+  /* All text inputs: placeholder contrast ≥4.5:1 */
+  textarea::placeholder, input::placeholder { color: var(--text-muted); }
+
+  .input:focus {
+    outline: none;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1.5px var(--text-strong);
+  }
+  .input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Skeleton ── */
+  .skeleton {
+    background: var(--border);
+    border-radius: 6px;
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── Status dot ── */
+  .status-dot {
+    display: inline-flex;
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: oklch(0.55 0.18 145);
+  }
+
+  /* ── Badges ── */
+  .badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; font-size: 0.6875rem; font-weight: 600; border-radius: 9999px; }
+  .badge-primary { background: var(--surface-active); color: var(--text-strong); }
+  .badge-accent  { background: var(--surface-active); color: var(--text-secondary); }
+  .badge-success { background: oklch(0.55 0.18 145 / 0.12); color: oklch(0.55 0.18 145); }
+  .badge-warning { background: oklch(0.62 0.18 65 / 0.12); color: oklch(0.62 0.18 65); }
+  .badge-error   { background: oklch(0.52 0.22 21 / 0.12); color: var(--text-danger); }
+
+  .divider { border: none; border-top: 0.5px solid var(--border); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Scrollbar — Apple minimal
+   ═══════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.60 0 0); }
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Answer prose
+   ═══════════════════════════════════════════════════════════════════ */
+
+.answer-prose {
+  line-height: 1.5;
+  color: var(--text-primary);
+  max-width: 65ch;
+}
+.answer-prose p { margin-bottom: 0.75rem; }
+.answer-prose p:last-child { margin-bottom: 0; }
+.answer-prose strong { font-weight: 600; color: var(--text-primary); }
+.answer-prose code {
+  background: var(--surface-muted); padding: 0.125rem 0.375rem; border-radius: 4px;
+  font-size: 0.8125rem; font-family: 'SF Mono', 'Menlo', monospace; color: var(--text-strong);
+}
+.answer-prose ul, .answer-prose ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+.answer-prose li { margin-bottom: 0.25rem; }
+.answer-prose h1, .answer-prose h2, .answer-prose h3 { color: var(--text-primary); font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Enchantment — conversation atmosphere
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ─ Breath sheen: subtle brushed-metal light sweep on new AI cards ─ */
+@keyframes breathSheen {
+  0%   { background-position: 200% 0; opacity: 1; }
+  60%  { opacity: 0.6; }
+  100% { background-position: -200% 0; opacity: 0; }
+}
+
+.card.breath-sheen {
+  position: relative;
+}
+.card.breath-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    oklch(1.0 0 0 / 0.4) 45%,
+    oklch(1.0 0 0 / 0.6) 50%,
+    oklch(1.0 0 0 / 0.4) 55%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: breathSheen 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─ Cursor dissolve: enhanced sparkle flicker ─ */
+@keyframes cursorSparkle {
+  0%   { opacity: 1; transform: scale(1); filter: blur(0); }
+  30%  { opacity: 0.8; transform: scale(1.3); filter: blur(1px); }
+  60%  { opacity: 0.3; transform: scale(0.6); filter: blur(2px); }
+  100% { opacity: 0; transform: scale(0); filter: blur(4px); }
+}
+
+/* ─ Input border light flow on hover/idle ─ */
+@keyframes borderFlow {
+  0%   { border-color: var(--border); }
+  50%  { border-color: oklch(0.70 0 0); }
+  100% { border-color: var(--border); }
+}
+
+/* ─ Metal Band: slow brushed-metal rotations ─ */
+@keyframes bandRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes bandRotateCCW {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+/* ─ Metal Band: breathing halo ─ */
+@keyframes haloBreath {
+  0%, 100% { transform: scale(1.0); opacity: 0.15; }
+  50%      { transform: scale(1.4); opacity: 0.95; }
+}
+@keyframes ringBreathFull {
+  0%, 100% { transform: scale(1.0); box-shadow: 0 6px 20px oklch(0 0 0 / 0.14), inset 0 1px 0 oklch(1.0 0 0 / 0.18); }
+  50%      { transform: scale(1.1); box-shadow: 0 12px 32px oklch(0 0 0 / 0.25), inset 0 2px 0 oklch(1.0 0 0 / 0.30); }
+}
+@keyframes discRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Toast notification ── */
+@keyframes toastIn {
+  0%   { opacity: 0; transform: translateY(-6px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-4px) scale(0.97); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes thinkingDot {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50%      { opacity: 1; transform: translateY(-3px); }
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ── Enchantment: micro breathing for hero icons ── */
+@keyframes floatAway {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+@keyframes citation-pulse {
+  0%   { box-shadow: 0 0 0 0 oklch(0.35 0 0 / 0.3); border-color: oklch(0.35 0 0 / 0.2); }
+  50%  { box-shadow: 0 0 0 4px oklch(0.35 0 0 / 0); border-color: oklch(0.35 0 0 / 0.06); }
+  100% { box-shadow: 0 0 0 0 oklch(0.35 0 0 / 0); border-color: var(--border); }
+}
+
+@keyframes skeletonPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+
+/* ── Delight: spring-pop for message bubbles ── */
+@keyframes springPop {
+  0%   { opacity: 0; transform: scale(0.95) translateY(4px); }
+  60%  { opacity: 1; transform: scale(1.01) translateY(-1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Delight: send button squish ── */
+@keyframes sendSquish {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+
+/* ── Delight: cursor dissolve ── */
+@keyframes cursorDissolve {
+  0%   { opacity: 1; }
+  60%  { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+
+.citation-marker {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 18px; padding: 0 4px;
+  font-size: 0.6875rem; font-weight: 600; border-radius: 4px; cursor: pointer;
+  background-color: var(--surface-active); color: var(--text-strong);
+  transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  margin: 0 1px; vertical-align: middle;
+}
+.citation-marker:hover { background-color: oklch(0.35 0 0 / 0.12); color: var(--text-body); }
+
+@media (prefers-reduced-motion: reduce) {
+  .streaming-cursor { animation: none !important; opacity: 1; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.15s !important; }
+}

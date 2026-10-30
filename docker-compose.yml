@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag-qa-agent
+    ports:
+      - "8000:8000"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL:-deepseek-chat}
+      - MOCK_LLM=${MOCK_LLM:-true}
+      - EMBEDDING_MODEL_NAME=${EMBEDDING_MODEL_NAME:-BAAI/bge-small-zh-v1.5}
+      - MODELS_DIR=${MODELS_DIR:-/app/models}
+      - CHUNK_SIZE=${CHUNK_SIZE:-600}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-100}
+      - MAX_FILE_SIZE_MB=${MAX_FILE_SIZE_MB:-20}
+      - DEFAULT_TOP_K=${DEFAULT_TOP_K:-5}
+    volumes:
+      - rag_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  rag_data:
